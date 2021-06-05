@@ -1,0 +1,216 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This is a random facts and translation API which consumes Random Useless Facts (https://uselessfacts.jsph.pl/) and Google Cloud Translation (https://cloud.google.com/translate)",
+    "version": "1.0.0",
+    "title": "The Unuseful API",
+    "contact": {
+      "email": "georgeanthony33@gmail.com"
+    }
+  },
+  "host": "virtserver.swaggerhub.com",
+  "basePath": "/georgeanthony33/unuseful-api/1.0.0",
+  "tags": [
+    {
+      "name": "status",
+      "description": "Regular status updates on data fetch for 1,000 random useless facts"
+    },
+    {
+      "name": "facts",
+      "description": "Access to random useless facts"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/status": {
+      "get": {
+        "tags": [
+          "status"
+        ],
+        "summary": "status updates on data fetch",
+        "description": "Provides regular status updates on data fetch for 1,000 random useless facts\n",
+        "operationId": "getStatus",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "final status update on the fetched data, with total fetched and total unique facts",
+            "schema": {
+              "type": "object"
+            }
+          },
+          "500": {
+            "description": "API error"
+          }
+        }
+      }
+    },
+    "/facts": {
+      "get": {
+        "tags": [
+          "facts"
+        ],
+        "summary": "array of ids for each of the 1,000 random useless facts",
+        "operationId": "getFactIds",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "returns array with 1,000 fact ids",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/FactIds"
+              }
+            }
+          },
+          "500": {
+            "description": "API error"
+          }
+        }
+      }
+    },
+    "/facts/{factId}": {
+      "get": {
+        "tags": [
+          "facts"
+        ],
+        "summary": "fetches a random useless fact with id set by {factId}",
+        "operationId": "getFact",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "factId",
+            "in": "path",
+            "description": "ID of fact to be fetched",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "returns the fact object",
+            "schema": {
+              "type": "object"
+            }
+          },
+          "500": {
+            "description": "Fact not found"
+          }
+        }
+      }
+    },
+    "/facts/{factId}/lang={lang}": {
+      "get": {
+        "tags": [
+          "facts"
+        ],
+        "summary": "fetches a random useless fact with id set by {factId} and translates it to the language set by {lang}",
+        "operationId": "getTranslatedFact",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "factId",
+            "in": "path",
+            "description": "ID of fact to be fetched",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "lang",
+            "in": "path",
+            "description": "language to convert text into",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "returns the fact object",
+            "schema": {
+              "type": "object"
+            }
+          },
+          "500": {
+            "description": "Fact not found / Translation error"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Status": {
+      "type": "object",
+      "required": [
+        "facts",
+        "status"
+      ],
+      "properties": {
+        "status": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "facts": {
+          "$ref": "#/definitions/Status_facts"
+        }
+      },
+      "description": "Status of the data fetch for 1,000 random useless facts"
+    },
+    "FactIds": {
+      "type": "array",
+      "description": "An array of ids for each of the 1,000 random useless facts",
+      "items": {
+        "type": "string"
+      }
+    },
+    "Fact": {
+      "type": "object",
+      "required": [
+        "id",
+        "language",
+        "text",
+        "url"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "language": {
+          "type": "string"
+        }
+      },
+      "description": "A random useless fact object"
+    },
+    "Status_facts": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "number"
+        },
+        "unique": {
+          "type": "number"
+        }
+      }
+    }
+  }
+}
