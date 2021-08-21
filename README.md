@@ -26,7 +26,7 @@ Run the server:
 
 ## Google Translation Authentication
 
-I've used the Google Cloud Platform's Translation API for the translation of facts in Part Two. Users can be authenticated via the following method:
+I've used the Google Cloud Platform's Translation API for the translation of facts. Users can be authenticated via the following method:
 
 - I will grant your email address access to a Service Account called `cloud-translation-service` on my "Unuseful API" Google Cloud Project
 - Navigate to the "Keys" tab. Click "Add Key" -> "Create new key" -> "JSON" -> "Create"
